@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<html>
+<head>
+    <title>calc</title>
+    <script src="script.js"></script>
+</head>
+    
+<body>
+    <div>Hello WebCalc!</div>
+    <div>
+    <input id = "result" type="text">
+
+    <button onclick="append('1')">1</button>
+    <button onclick="append('2')">2</button>
+    <button onclick="append('3')">3</button>
+    <button onclick="append('+')">+</button>
+    <button onclick="append('-')">-</button>
+
+    <button onclick="calc()" >=</button>
+
+    <button onclick="update('')">CLR</button>
+    </div>
+    <div>
+        <p>debug<p>
+        <input id = "debug" type="text">
+        <button onclick="debug.value=Number('-100')">デバッグ</button>
+    </div>
+</body></html>
