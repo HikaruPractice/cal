@@ -225,12 +225,21 @@ function ReversePolishCalculator(inp){
     var popA;
     var popB;
     var ope;
+    var dot = false;
+    var digit = 0;
     for(let i = 1;i<=len;i++){
         ch = inp.slice(0,1);
         inp=inp.slice(1);
         if(/^\d$/.test(ch)){
-            tempnum = tempnum*10+Number(ch);
-            ope = 0;
+            if (dot){
+                tempnum = tempnum*10+Number(ch);
+                digit++;
+            }else{
+                tempnum = tempnum*10+Number(ch);
+            }
+            ope=0;
+        }else if('.' == ch){
+            dot = true;
         }else if(/^[\+\-\*\/]$/.test(ch)){
             popB = stack.pop()
             popA = stack.pop()
@@ -251,8 +260,11 @@ function ReversePolishCalculator(inp){
             ope = 1;
         }else{
             if (ope == 0){
+                tempnum/=10**digit
                 stack.push(tempnum);
                 tempnum=0
+                dot = false;
+                digit = 0;
             }   
         }
     }
@@ -264,16 +276,26 @@ function ReversePolishConverter(inp){
     var tempnum=0;
     var output="";
     var ope=0;
+    var dot = false;
+    var digit = 0;
     var ch;
     var popA;
     for(let i = 1;i<=len;i++){
         ch = inp.slice(0,1);
         inp=inp.slice(1);
         if(/^\d$/.test(ch)){
-            tempnum = tempnum*10+Number(ch);
-            ope=0
+            if (dot){
+                tempnum = tempnum*10+Number(ch);
+                digit++;
+            }else{
+                tempnum = tempnum*10+Number(ch);
+            }
+            ope=0;
+        }else if('.' == ch){
+            dot = true;
         }else if(/^[\+\-\*\/]$/.test(ch)){
             if (ope==0){
+            tempnum/=10**digit;
             output+= tempnum.toString() + ',';
             tempnum=0;
             }
@@ -291,11 +313,14 @@ function ReversePolishConverter(inp){
             }
             stack.push(ch);
             ope=1
+            dot = false;
+            digit =0;
         }else if ('(' == ch || ')' == ch){
             if ('(' == ch){
                 stack.push(ch);
             }else if (')' == ch){
                 if (ope==0){
+                    tempnum/=10**digit;
                     output+= tempnum.toString() + ',';
                     tempnum=0;
                     }
@@ -308,9 +333,12 @@ function ReversePolishConverter(inp){
                 }
             }
             ope=1
+            dot = false;
+            digit = 0;
         }
     }
     if (ope==0){
+        tempnum/=10**digit;
         output+= tempnum.toString() + ',';
         tempnum=0;
         }
