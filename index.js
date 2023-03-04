@@ -1,249 +1,232 @@
-let stack = [];
-let hr = 1;
-let hr_div = false; 
-let f_cal = true;
-let f_ope = false;
-let f_dot = false;
-let f_rightB = false;
+let inpN = '';
+let inpO = '';
+let stack =[];
+let formal = '';
 let brackets = 0;
+let KeyN = '';
+let KeyO = '';
+let f_dot = false;
+let KariResult = 0;
+let Ans = 0;
+let result;
+let input;
+let rightParenthesis;
 
 window.onload = ()=>{
-    var result =  document.getElementById('result');
-    var input = document.getElementById('input');
+    result =  document.getElementById('result');
+    input = document.getElementById('input');
+    rightParenthesis = document.getElementById('button_right');
+    rightParenthesis.disabled = true; 
     document.addEventListener('keypress', getKeyboardValue);
+
+
 }
 
-function append(_v){
-    if (f_cal){
-        input.value = '';
-        result.textContent = _v;
-        f_cal = false
-    }else{
-        if (f_ope){
-            result.textContent=_v;
-        }else{
-            result.textContent += _v;
-        }
-    }
-    f_ope = false
-}
-
-function dot(){
-    if (f_cal){
-        input.value = '';
-        result.textContent = '0.';
-        f_cal = false
-    }else{
-        if (f_ope){
-            result.textContent='0.';
-        }else if(!f_dot){ 
-            result.textContent += '.';
-        }
-    }
-    f_dot = true
-    f_ope = false
-}
-
-function ope(_v){
-    if (f_cal){
-        input.value = result.textContent + _v;
-        f_cal = false
-    }else{
-        if ( f_ope){
-            return;
-            input.value = input.value.replace(/[\+\-×÷]$/,_v);
-        }else{
-            if(f_dot){
-            result.textContent = result.textContent.replace(/\.$/,'');
-            }
-            input.value += result.textContent + _v;
-        }
-    }
-    if ('×' == _v){
-        if (hr_div){
-            hr /= Number(result.textContent);
-        }else{
-            hr *= Number(result.textContent);
-        }
-        result.textContent = hr;
-        hr_div = false;
-    } else if ('÷' == _v){
-        if (hr_div){
-            hr /= Number(result.textContent);
-        }else{
-            hr *= Number(result.textContent);
-        }
-        result.textContent = hr;
-        hr_div = true;
-    } else if (/^[\+\-]$/.test(_v)){
-        hr =1;
-        let tempst = input.value + '0';
-        if(brackets > 0){
-            let tempst_search = tempst.lastIndexOf('(');
-            tempst = tempst.substring(tempst_search);
-            tempst = tempst + ')'
-        }
-        result.textContent =  cal_RPC(tempst);
-        hr_div = false;
-    }
-    f_ope = true;
-    f_dot = false;
-}
-
-function leftB(){
-    if (f_cal){
-        input.value = '(';
-        f_cal = false
-    }else{
-        if (f_ope){
-            input.value += '(';
-        }else{
-            if(f_dot){
-            result.textContent = result.textContent.replace(/.$/,'');
-            }
-            input.value += result.textContent + '×(';
-        }
-        result.textContent=0;
-    }
-    f_ope = true;
-    f_dot = false;
-    brackets++;
-}
-function rightB(){
-    if (brackets == 0){
-        return;
-    }
-
-    if(f_dot){
-        result.textContent = result.textContent.replace(/.$/,'');
-    }
-    if(!f_rightB){
-        input.value += result.textContent;
-    }
-    input.value += ')';
-
-    let tempst = input.value;
-    tempst_search = tempst.lastIndexOf('(');
-    tempst = tempst.substring(tempst_search);
-    result.textContent =  cal_RPC(tempst);
-
-    f_ope = true;
-    f_dot = false;
-    brackets--;
-    f_rightB=true;
-}
-
-function clr(){
-    input.value='';
-    result.textContent='0';
-    f_ope = false;
-    f_cal = true;
-    f_dot = false;
+function reset(){
+    inpN = '';
+    inpO = '';
+    stack =[];
+    formal = '';
     brackets = 0;
-    hr = 1;
-    hr_div = false;
-}
-function cal(){
-    if (f_cal){
-        input.value = result.textContent + '=';
-    }else{
-        if(!f_rightB){
-            input.value += result.textContent ;
-        } 
-        for(let i = brackets;i >= 1;i--){
-            input.value += ')';
-        }    
-        result.textContent=cal_RPC(input.value);
-
-        input.value += '=';
-        f_ope = false;
-        f_cal = true;
-        f_dot = false;
-        brackets = 0;
-        hr = 1;
-        hr = 1;
-        hr_div = false;
-        result.classList.add('ani');
-    }
+    f_dot = false;
+    KariResult = 0;
 }
 
-function cal_RPC(st){
-    let rp = st;
-    rp = rp.replace(/×/g,'*');
-    rp = rp.replace(/÷/g,'/');
-    return ReversePolishCalculator(ReversePolishConverter(rp));
-}
+
 
 function pushButton(_v){
-    result.classList.remove('ani');
-    if (f_rightB){
-        if (/^\d$/.test(_v)){
-            input.value += '×';
-            append(_v);
-        }else if('.' == _v){
-            input.value += '×';
-            dot();
-        }else if(/^[\+\-×÷]$/.test(_v)){
-            input.value += _v;
-        }else if('(' == _v){
-            input.value += '×';
-            leftB();
-        }else if (')' == _v){
-            rightB();
-            return;
-        }else if('=' === _v){
-            cal();
-        }else if('C' === _v){
-            clr();
-        }
-        f_rightB = false
+    KeyN = _v;
+    //計算後初回入力で数式を消す
+    if ('C' === KeyN){
+        reset();
+        KeyN = '';
+        KeyO = '';
+        input.value = '';
+        result.textContent = '0';
     }else{
-        if (/^\d$/.test(_v)){
-            append(_v);
-        }else if('.' == _v){
-            dot();
-        }else if(/^[\+\-×÷]$/.test(_v)){
-            ope(_v);
-        }else if('(' == _v){
-            leftB();
-        }else if (')' == _v){
-            rightB();
-        }else if('=' === _v){
-            cal();
-        }else if('C' === _v){
-            clr();
+        //直前が数字かドットの時
+        if (/^[\d\.]$/.test(KeyO)){
+            if (/^[\d\.]$/.test(KeyN)){
+                inpN += KeyN;
+                result.textContent = inpN;
+            }else if(/^[\+\-×÷\*\/]$/.test(KeyN)){
+                pushStack(inpN);
+                inpO = KeyN;
+                input.value = formal + KeyN;
+                Kari_Cal();
+            }else if('(' === KeyN){
+    
+            }else if(')' === KeyN){
+                pushStack(inpN);
+                pushStack(')');
+                brackets--;
+                Kari_Cal();
+            }else if ('=' === KeyN){
+                pushStack(inpN);
+                main_Cal();
+            }
+        //直前が演算子の時
+        }else if(/^[\+\-×÷\*\/]$/.test(KeyO)){
+            if (/^[\d\.]$/.test(KeyN)){
+                pushStack(inpO);
+                inpO = '';
+                inpN = KeyN;
+                result.textContent = inpN;
+
+            }else if(/^[\+\-×÷\*\/]$/.test(KeyN)){
+                inpO = KeyN;
+                input.value = formal + KeyN;
+            }else if('(' === KeyN){
+                pushStack(inpO);
+                pushStack('(');
+                brackets++;
+            }else if(')' === KeyN){
+    
+            }else if ('=' === KeyN){
+                pushStack(inpO);
+                pushStack(KariResult);
+                main_Cal();
+            }
+
+        }else if('(' === KeyO){
+
+            if (/^[\d\.]$/.test(KeyN)){
+                inpN = KeyN;
+                result.textContent = inpN;
+            }else if(/^[\+\-×÷\*\/]$/.test(KeyN)){
+    
+            }else if('(' === KeyN){
+                pushStack('(');
+                brackets++;
+            }else if(')' === KeyN){
+    
+            }else if ('=' === KeyN){
+                
+            }
+        }else if(')' === KeyO){
+            if (/^[\d\.]$/.test(KeyN)){
+            
+
+            }else if(/^[\+\-×÷\*\/]$/.test(KeyN)){
+                inpO = KeyN;
+                input.value = formal + KeyN;
+            }else if('(' === KeyN){
+    
+            }else if(')' === KeyN){
+                pushStack(')');
+                brackets--;
+            }else if ('=' === KeyN){
+                main_Cal();
+            }
+
+        //初期状態のとき
+        }else if(/^\={0,1}$/.test(KeyO)){
+            input.value = '';
+            if (/^[\d\.]$/.test(KeyN)){
+                inpN = KeyN;
+                result.textContent = inpN;
+            }else if(/^[\+\-×÷\*\/]$/.test(KeyN)){
+                inpN = Ans;
+                pushStack(inpN);
+                inpO = KeyN;
+                input.value = formal + KeyN;
+                Kari_Cal();
+            }else if('(' === KeyN){
+                pushStack('(');
+                brackets++;
+            }else if(')' === KeyN){
+    
+            }else if ('=' === KeyN){
+                inpN = Ans;
+                input.value = Ans + '=';
+                result.textContent = Ans;
+            }
+        //計算実行後
         }
+        KeyO = KeyN;
     }
+    rightParenthesis.disabled = (brackets === 0);
+}
+
+function pushStack(st){
+    formal += st;
+    stack.push(st);
+    input.value = formal;
 }
 
 
+//改修前の計算機
+//計算式の文字列を引数とする
+function Kari_Cal(){
+    KariResult = Calculation(stack);
+    result.textContent = KariResult;
+}
+
+function main_Cal(){
+    for (let i = 1;i <= brackets;i++){
+        input.value+=')';
+        stack.push(')');
+    }
+    brackets = 0;
+    Ans = Calculation(stack);
+
+    input.value+='=';
+    result.textContent = Ans;
+    reset();
+}
+
+function manualDo(){
+    let st = document.getElementById('manual').value;
+    let arr = new Array();
+    let len = st.length;
+    pushButton('C');
+    for (let i=1;i<=len;i++){
+        pushButton(st.slice(0,1));
+        st=st.slice(1);
+    }
+    pushButton('=');
+}
+
+function Calculation(st){
+    let rtn = 0;
+    let rp = st.slice();
+    let max = rp.length;
+    //キーに応じてstackに入れるときはその文字列のまま処理
+    //計算するとき(ここ)に適切な中身に変換した新しい配列を作る
+    for (let i = 0;i <max;i++ ){
+        switch (rp[i]){
+            case '×':
+            rp[i] = '*';
+            break;
+            case '÷':
+            rp[i] = '/';
+            break;
+            default:
+            if (/[\d\.]+/.test(rp[i])){
+                rp[i] = Number(rp[i]);
+            }
+        }
+    }
+    
+    for (let i = 1;i <= brackets;i++){
+        rp.push(')');
+    }
+    rtn = ReversePolishCalculator(ReversePolishConverter(rp));
+
+    return rtn;
+}
 function ReversePolishCalculator(inp){
     var len = inp.length
-    var stack=[];
-    var tempnum=0;
-    var ch;
-    var popA;
-    var popB;
-    var ope;
-    var dot = false;
-    var digit = 0;
-    for(let i = 1;i<=len;i++){
-        ch = inp.slice(0,1);
-        inp=inp.slice(1);
-        if(/^\d$/.test(ch)){
-            if (dot){
-                tempnum = tempnum*10+Number(ch);
-                digit++;
-            }else{
-                tempnum = tempnum*10+Number(ch);
-            }
-            ope=0;
-        }else if('.' == ch){
-            dot = true;
-        }else if(/^[\+\-\*\/]$/.test(ch)){
+    var inpRev = inp.reverse();
+    var stack=new Array();
+    var popInp;
+    for (i=0;i<len;i++){
+        popInp = inpRev.pop();
+        switch(typeof(popInp)){
+            case 'string':
             popB = stack.pop()
             popA = stack.pop()
-            switch (ch){
+            switch (popInp){
                 case '+':
                     stack.push(popA+popB);
                     break;
@@ -256,134 +239,103 @@ function ReversePolishCalculator(inp){
                 case '/':
                     stack.push(popA/popB);
                     break;
+                default:
+                    //演算子以外の文字列を無視するために原状回復
+                    stack.push(popB);
+                    stack.push(popA);
             }
-            ope = 1;
-        }else{
-            if (ope == 0){
-                tempnum/=10**digit
-                stack.push(tempnum);
-                tempnum=0
-                dot = false;
-                digit = 0;
-            }   
+            break;
+            case 'number':
+            //数値の場合
+                stack.push(popInp);
         }
     }
     return stack.pop()
 }
 function ReversePolishConverter(inp){
-    var len = inp.length
-    var stack=[];
-    var tempnum=0;
-    var output="";
-    var ope=0;
-    var dot = false;
-    var digit = 0;
-    var ch;
+    var len = inp.length;
+    var inpRev = inp.reverse();
+    var OpeStack=new Array();
+    var OutStack=new Array();
     var popA;
     for(let i = 1;i<=len;i++){
-        ch = inp.slice(0,1);
-        inp=inp.slice(1);
-        if(/^\d$/.test(ch)){
-            if (dot){
-                tempnum = tempnum*10+Number(ch);
-                digit++;
-            }else{
-                tempnum = tempnum*10+Number(ch);
-            }
-            ope=0;
-        }else if('.' == ch){
-            dot = true;
-        }else if(/^[\+\-\*\/]$/.test(ch)){
-            if (ope==0){
-            tempnum/=10**digit;
-            output+= tempnum.toString() + ',';
-            tempnum=0;
-            }
-            if(/^[\*\/]$/.test(ch)){
-                if(/^[\*\/]$/.test(stack[stack.length-1])){
-                    output+= stack.pop() + ',';
-                }
-            }else if(/^[\+\-]$/.test(ch)){
-                while (stack.length > 0){
-                    if('(' == stack[stack.length-1]){
-                        break;
+        popA = inpRev.pop();
+        switch (typeof(popA)){
+            case 'number':
+                OutStack.push(popA);
+                break;
+            case 'string':
+                if (/^[\*\/]$/.test(popA)){
+                    if(/^[\*\/]$/.test(OpeStack[OpeStack.length-1])){
+                        OutStack.push(OpeStack.pop());
                     }
-                    output+= stack.pop() + ',';
-                }
-            }
-            stack.push(ch);
-            ope=1
-            dot = false;
-            digit =0;
-        }else if ('(' == ch || ')' == ch){
-            if ('(' == ch){
-                stack.push(ch);
-            }else if (')' == ch){
-                if (ope==0){
-                    tempnum/=10**digit;
-                    output+= tempnum.toString() + ',';
-                    tempnum=0;
+                    OpeStack.push(popA);
+                }else if(/^[\+\-]$/.test(popA)){
+                    while (OpeStack.length > 0){
+                        if('(' == OpeStack[OpeStack.length-1]){
+                            break;
+                        }
+                        OutStack.push(OpeStack.pop());
                     }
-                while (stack.length > 0){
-                    if('(' == stack[stack.length-1]){
-                        stack.pop();
-                        break;
+                    OpeStack.push(popA);
+                }else if('(' == popA){
+                    OpeStack.push(popA);
+                }else if(')' == popA){
+                    while (OpeStack.length > 0){
+                        if('(' == OpeStack[OpeStack.length-1]){
+                            OpeStack.pop();
+                            break;
+                        }
+                        OutStack.push(OpeStack.pop());
                     }
-                    output+= stack.pop() + ',';
                 }
-            }
-            ope=1
-            dot = false;
-            digit = 0;
+            
         }
     }
-    if (ope==0){
-        tempnum/=10**digit;
-        output+= tempnum.toString() + ',';
-        tempnum=0;
-        }
-    while (stack.length > 0){
-        output+=stack.pop()+','
+    while (OpeStack.length > 0){
+        OutStack.push(OpeStack.pop());
     }
-    return output;
+    return OutStack;
 }
 
 // 同じ動作をキーボードの[1]キーが入力されたときに実行したい
 function getKeyboardValue  (e)  {
-  switch (e.key) { // 入力されたキーを判断
-    case '0':
-    case '1':
-    case '2':
-    case '3':
-    case '4':
-    case '5':
-    case '6':
-    case '7':
-    case '8':
-    case '9':
-    case '+':
-    case '-':
-        pushButton(e.key);
-        break;
-    case 'c':
-        pushButton('C');
-        break;
-    case ';':
-        pushButton('+');
-        break;
-    case '/':
-        pushButton('÷');
-        break;
-    case '*':
-    case ':':
-        pushButton('×');
-        break;
-    case 'Enter':
-        pushButton('=');
-        break;
-    case 'Delete':
-        pushButton('c');
-        break;
+    switch (e.key) { // 入力されたキーを判断
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
+        case '+':
+        case '-':
+        case 'C':
+        case '(':
+        case ')':
+            pushButton(e.key);
+            break;
+        case 'c':
+            pushButton('C');
+            break;
+        case ';':
+            pushButton('+');
+            break;
+        case '/':
+            pushButton('÷');
+            break;
+        case '*':
+        case ':':
+            pushButton('×');
+            break;
+        case 'Enter':
+            pushButton('=');
+            break;
+        case 'Delete':
+            pushButton('C');
+            break;
+    }
   }
-
-}
