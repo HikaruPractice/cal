@@ -11,6 +11,7 @@ let Ans = 0;
 let result;
 let input;
 let rightParenthesis;
+let f_manualInput = false;
 
 window.onload = ()=>{
     result =  document.getElementById('result');
@@ -18,6 +19,12 @@ window.onload = ()=>{
     rightParenthesis = document.getElementById('button_right');
     rightParenthesis.disabled = true; 
     document.addEventListener('keypress', getKeyboardValue);
+    document.getElementById('manual').addEventListener('focus', ()=>{
+        f_manualInput = true;
+    });
+    document.getElementById('manual').addEventListener('blur', ()=>{
+        f_manualInput = false;
+    });
 
 
 }
@@ -121,6 +128,7 @@ function pushButton(_v){
 
         //初期状態のとき
         }else if(/^\={0,1}$/.test(KeyO)){
+            result.classList.remove('ani');
             input.value = '';
             if (/^[\d\.]$/.test(KeyN)){
                 inpN = KeyN;
@@ -172,6 +180,7 @@ function main_Cal(){
 
     input.value+='=';
     result.textContent = Ans;
+    result.classList.add('ani');
     reset();
 }
 
@@ -300,42 +309,48 @@ function ReversePolishConverter(inp){
 
 // 同じ動作をキーボードの[1]キーが入力されたときに実行したい
 function getKeyboardValue  (e)  {
-    switch (e.key) { // 入力されたキーを判断
-        case '0':
-        case '1':
-        case '2':
-        case '3':
-        case '4':
-        case '5':
-        case '6':
-        case '7':
-        case '8':
-        case '9':
-        case '+':
-        case '-':
-        case 'C':
-        case '(':
-        case ')':
-            pushButton(e.key);
-            break;
-        case 'c':
-            pushButton('C');
-            break;
-        case ';':
-            pushButton('+');
-            break;
-        case '/':
-            pushButton('÷');
-            break;
-        case '*':
-        case ':':
-            pushButton('×');
-            break;
-        case 'Enter':
-            pushButton('=');
-            break;
-        case 'Delete':
-            pushButton('C');
-            break;
+    if (f_manualInput){
+        if (e.key === 'Enter'){
+            manualDo();
+        }
+    }else{
+        switch (e.key) { // 入力されたキーを判断
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+            case '+':
+            case '-':
+            case 'C':
+            case '(':
+            case ')':
+                pushButton(e.key);
+                break;
+            case 'c':
+                pushButton('C');
+                break;
+            case ';':
+                pushButton('+');
+                break;
+            case '/':
+                pushButton('÷');
+                break;
+            case '*':
+            case ':':
+                pushButton('×');
+                break;
+            case 'Enter':
+                pushButton('=');
+                break;
+            case 'Delete':
+                pushButton('C');
+                break;
+        }
     }
   }
