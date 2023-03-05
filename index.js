@@ -21,6 +21,7 @@ window.onload = ()=>{
     document.addEventListener('keypress', getKeyboardValue);
     document.getElementById('manual').addEventListener('focus', ()=>{
         f_manualInput = true;
+        
     });
     document.getElementById('manual').addEventListener('blur', ()=>{
         f_manualInput = false;
@@ -62,7 +63,11 @@ function pushButton(_v){
                 input.value = formal + KeyN;
                 Kari_Cal();
             }else if('(' === KeyN){
-    
+                pushStack(inpN);
+                Kari_Cal();
+                pushStack('×');
+                pushStack('(');
+                brackets++;
             }else if(')' === KeyN){
                 pushStack(inpN);
                 pushStack(')');
@@ -88,7 +93,9 @@ function pushButton(_v){
                 pushStack('(');
                 brackets++;
             }else if(')' === KeyN){
-    
+                pushStack(inpO);
+                pushStack(KariResult);
+                Kari_Cal();
             }else if ('=' === KeyN){
                 pushStack(inpO);
                 pushStack(KariResult);
@@ -101,7 +108,13 @@ function pushButton(_v){
                 inpN = KeyN;
                 result.textContent = inpN;
             }else if(/^[\+\-×÷\*\/]$/.test(KeyN)){
-    
+                switch(_v){
+                    case '+':
+                    case '-':
+                        KeyN = '0'; //数字扱い
+                        inpN = _v;
+                        result.textContent = inpN;
+                }
             }else if('(' === KeyN){
                 pushStack('(');
                 brackets++;
@@ -112,13 +125,17 @@ function pushButton(_v){
             }
         }else if(')' === KeyO){
             if (/^[\d\.]$/.test(KeyN)){
-            
-
+                pushStack('×');
+                inpN = KeyN;
+                result.textContent = inpN;
             }else if(/^[\+\-×÷\*\/]$/.test(KeyN)){
                 inpO = KeyN;
                 input.value = formal + KeyN;
             }else if('(' === KeyN){
-    
+                pushStack('×');
+                pushStack('(');
+                brackets++;
+
             }else if(')' === KeyN){
                 pushStack(')');
                 brackets--;
@@ -134,16 +151,18 @@ function pushButton(_v){
                 inpN = KeyN;
                 result.textContent = inpN;
             }else if(/^[\+\-×÷\*\/]$/.test(KeyN)){
-                inpN = Ans;
-                pushStack(inpN);
-                inpO = KeyN;
-                input.value = formal + KeyN;
-                Kari_Cal();
+                switch(_v){
+                    case '+':
+                    case '-':
+                        KeyN = '0'; //数字扱い
+                        inpN = _v;
+                        result.textContent = inpN;
+                }
             }else if('(' === KeyN){
                 pushStack('(');
                 brackets++;
             }else if(')' === KeyN){
-    
+                
             }else if ('=' === KeyN){
                 inpN = Ans;
                 input.value = Ans + '=';
@@ -310,6 +329,8 @@ function ReversePolishConverter(inp){
 // 同じ動作をキーボードの[1]キーが入力されたときに実行したい
 function getKeyboardValue  (e)  {
     if (f_manualInput){
+        result.classList.remove('ani');
+        
         if (e.key === 'Enter'){
             manualDo();
         }
@@ -336,7 +357,11 @@ function getKeyboardValue  (e)  {
                 pushButton('C');
                 break;
             case ';':
+            case '＋':
                 pushButton('+');
+                break;
+            case '－':
+                pushButton('-');
                 break;
             case '/':
                 pushButton('÷');
