@@ -10,7 +10,7 @@
 <body>
     <div>
         <table id ="Calculator">
-            <caption>電卓</caption>
+            <caption><h2>電卓</h2></caption>
             <tbody>
                 <tr>
                     <td colspan="4">
@@ -22,7 +22,12 @@
                         <span id="result">0</span>
                     </td>
                 </tr>
-
+                <tr id="tr_back">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td id="td_back"><button id = "button_back" onclick="back()" disabled = "trus">Back</button></td>
+                </tr>
             </tbody>
             <script>
                 let Calculator = document.getElementById('Calculator').getElementsByTagName('tbody')[0];
@@ -41,7 +46,7 @@
                    ['7','8','9','times'],
                    ['4','5','6','minus'],
                    ['1','2','3','plus'],
-                   ['0','.','Enter','dummy'],
+                   ['0','dot','Enter','dummy'],
                 ]
                 for(let i=0; i<Symbols.length;i++){
                     tr_element_buttons = document.createElement('tr');
@@ -64,6 +69,9 @@
             </script>
         </table>
         <input id="manual" type="text" enterkeyhint="done">
-        <button onclick="manualDo()"></button>
+        <button id="button_manual" onclick="manualDo()">入力</button>
+        
+        <h3>次やること</h3>
+        <p>履歴機能をつける</p>
     </div>
 </body></html>

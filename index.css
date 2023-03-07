@@ -1,18 +1,19 @@
 :root{
-    --form-height:50px;
-    --form-width:50px;
+    --form-height:100px;
+    --form-width:100px;
 }
 
 th,td {
-    width: 52px;
-    height: 52px;
+    width: 104px;
+    height: 104px;
     text-align: center;
 }
 
 table {
-    border-spacing: 10px;
-    border: solid 1px;
-    background-color: aqua       ;
+    border-spacing: 20px;
+    border: solid 10px;
+    border-color: aqua;
+    background-color: aquamarine;       ;
 }
 
 input{
@@ -21,18 +22,31 @@ input{
 }
 
 #input{
-    width: 238px;
-    height: 25px;
-    font-size: 20px;
+    width: 476px;
+    height: 50px;
+    font-size: 40px;
     background-color: darkcyan;
     color: powderblue;
 }
+
+#manual{
+    width: 430px;
+    height: 50px;
+    font-size: 40px;
+
+}
+
+#button_manual{
+    height: 50px;
+    font-size: 30px;
+}
+
 td:has(>#input){
-    height: 27px;
+    height: 54px;
 }
 
 #td_result{
-    border: solid 1px;;
+    border: solid 2px;;
     border-color: deepskyblue;
     background-color: white;
     text-align: right;
@@ -40,14 +54,14 @@ td:has(>#input){
 }
 
 #result{
-    font-size: 30px;
+    font-size: 60px;
     display:inline-block;
 }
 
 button {
     width: var(--form-width);
     height: var(--form-height);
-    font-size: 30px;
+    font-size: 60px;
     background-color: deepskyblue;
     color: blue;
     border-color: deepskyblue;
@@ -60,13 +74,27 @@ button:disabled{
 
 }
 
+.operator_selected{
+    background-color: aquamarine;
+    border-color: aquamarine;
+}
+
+#tr_back,#tr_back >td{
+    height: 54px;
+}
+
+#button_back{
+    height: 50px;
+    font-size: 30px;
+}
+
 #button_plus{
-    height: 114px;;
+    height: 228px;;
 }
 
 .ani{
     animation: appear 0.1s linear forwards;
-    transform: translateY(-25px);
+    transform: translateY(-50px);
 }
 
 @keyframes appear{
