@@ -3,17 +3,21 @@
     --form-width:100px;
 }
 
-th,td {
+#Calculator th,#Calculator td {
     width: 104px;
     height: 104px;
     text-align: center;
 }
 
-table {
+#tablses td{
+    vertical-align:top;
+}
+
+#Calculator {
     border-spacing: 20px;
     border: solid 10px;
     border-color: aqua;
-    background-color: aquamarine;       ;
+    background-color: aquamarine;       
 }
 
 input{
@@ -45,20 +49,21 @@ td:has(>#input){
     height: 54px;
 }
 
-#td_result{
-    border: solid 2px;;
+#Calculator #td_result{
+    border: solid 2px;
     border-color: deepskyblue;
     background-color: white;
-    text-align: right;
     overflow: hidden;
+    text-align: right;
 }
 
 #result{
     font-size: 60px;
     display:inline-block;
+    text-align: right;
 }
 
-button {
+#Calculator button {
     width: var(--form-width);
     height: var(--form-height);
     font-size: 60px;
@@ -67,14 +72,14 @@ button {
     border-color: deepskyblue;
 }
 
-button:disabled{
+#Calculator button:disabled{
     background-color: steelblue;
     color: blue;
     border-color: steelblue;
 
 }
 
-.operator_selected{
+#Calculator .operator_selected{
     background-color: aquamarine;
     border-color: aquamarine;
 }
@@ -83,12 +88,12 @@ button:disabled{
     height: 54px;
 }
 
-#button_back{
+#Calculator #button_back{
     height: 50px;
     font-size: 30px;
 }
 
-#button_plus{
+#Calculator #button_plus{
     height: 228px;;
 }
 
@@ -102,3 +107,4 @@ button:disabled{
         transform: translateY(0px);
     }
 }
+

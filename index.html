@@ -1,77 +1,87 @@
 <!DOCTYPE html>
 <meta charset="UTF-8">
 <html>
+
 <head>
     <title>calc</title>
     <script src="index.js"></script>
+    <script src="history.js"></script>
     <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="history.css">
 </head>
-    
+
 <body>
     <div>
-        <table id ="Calculator">
-            <caption><h2>電卓</h2></caption>
-            <tbody>
-                <tr>
-                    <td colspan="4">
-                        <input id="input" type="text" readonly>
-                    </td>
-                </tr>
-                <tr>
-                    <td id="td_result" colspan="4">
-                        <span id="result">0</span>
-                    </td>
-                </tr>
-                <tr id="tr_back">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td id="td_back"><button id = "button_back" onclick="back()" disabled = "trus">Back</button></td>
-                </tr>
-            </tbody>
-            <script>
-                let Calculator = document.getElementById('Calculator').getElementsByTagName('tbody')[0];
-                let tr_element_buttons;
-                let td_element_buttons;
-                let button;
-                let Symbols=[
-                   ['C','(',')','÷'],
-                   ['7','8','9','×'],
-                   ['4','5','6','-'],
-                   ['1','2','3','+'],
-                   ['0','.','=',''],
-                ]
-                let SymbolNames=[
-                   ['CLR','left','right','divided'],
-                   ['7','8','9','times'],
-                   ['4','5','6','minus'],
-                   ['1','2','3','plus'],
-                   ['0','dot','Enter','dummy'],
-                ]
-                for(let i=0; i<Symbols.length;i++){
-                    tr_element_buttons = document.createElement('tr');
-                    for(let j=0;j<Symbols[0].length;j++){
-                        td_element_buttons = document.createElement('td');
-                        td_element_buttons.id = 'td_' + SymbolNames[i][j];
-                        button=document.createElement('button');
-                        button.onclick = event=>pushButton(Symbols[i][j]);
-                        button.id = 'button_' + SymbolNames[i][j];
-                        button.textContent= Symbols[i][j];
-                        td_element_buttons.appendChild(button);
-                        tr_element_buttons.appendChild(td_element_buttons);
-                    }
-                    Calculator.appendChild(tr_element_buttons);
-                }
-                let td_dummy = document.getElementById('td_dummy');
-                td_dummy.parentNode.removeChild(td_dummy);
-                let td_plus = document.getElementById('td_plus');
-                td_plus.rowSpan = '2';
-            </script>
+        <table id="tablses">
+            <caption>
+                <h2>電卓</h2>
+            </caption>
+            <tr>
+                <td>
+                    <table id="Calculator">
+                        <tbody>
+                            <tr>
+                                <td colspan="4">
+                                    <input id="input" type="text" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td id="td_result" colspan="4">
+                                    <span id="result">0</span>
+                                </td>
+                            </tr>
+                            <tr id="tr_back">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td id="td_back"><button id="button_back" onclick="back()" disabled="trus">Back</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <script src="createButtons.js"></script>
+                                                
+                    </table>
+                </td>
+                <td>
+                    <table id="history">
+                        <caption>履歴</caption>
+                        <tr>
+                            <td>
+                                <button  onclick="useHistory(0)">計算式<br>結果</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button  onclick="useHistory(1)">計算式<br>結果</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button  onclick="useHistory(2)">計算式<br>結果</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button  onclick="useHistory(3)">計算式<br>結果</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button  onclick="useHistory(4)">計算式<br>結果</button>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
         </table>
         <input id="manual" type="text" enterkeyhint="done">
         <button id="button_manual" onclick="manualDo()">入力</button>
-        
+
         <h3>次やること</h3>
-        <p>履歴機能をつける</p>
+        <p>履歴がない場合に対応させる</p>
+        <p>メモリ機能とメモリ・Ans表示を作る</p>
     </div>
-</body></html>
+</body>
+
+</html>

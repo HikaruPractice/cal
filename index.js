@@ -102,7 +102,7 @@ function buttonDisableSetting(){
         rightParenthesis.disabled = (brackets === 0);
     }
     //符号モード判定
-    if(KeyO === '' || KeyO === 'LeftBracket'|| KeyO === 'Sign'){
+    if(KeyO === '' || KeyO === 'Enter' || KeyO === 'LeftBracket'|| KeyO === 'Sign'){
         signModeSw(true);
     }else{
         signModeSw(false);
@@ -138,6 +138,10 @@ function pushButton(_v) {
     //計算後初回入力で数式を消す
     if (KeyO === 'Enter') {
         reset();
+        button_history(0).classList.remove('disappear','appear')
+        for (i=1;i<5;i++){
+            button_history(i).classList.remove('warp','move');
+        }
     }
 
     if (KeyN === 'Clear') {
@@ -146,6 +150,10 @@ function pushButton(_v) {
         KeyO = '';
         input.value = '';
         result.textContent = '0';
+        button_history(0).classList.remove('disappear','appear')
+        for (i=1;i<5;i++){
+            button_history(i).classList.remove('warp','move');
+        }
     } else if (KeyN === 'Other') {
         return;
     } else {
@@ -515,6 +523,8 @@ function main_Cal() {
     brackets = 0;
     Ans = Calculation(stack);
 
+    saveResulet();
+    
     input.value += '=';
     result.textContent = Ans;
     result.classList.add('ani');
