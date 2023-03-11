@@ -3,6 +3,7 @@
     border: solid 2px;
     border-color: deepskyblue;
     background-color: lightcyan;
+    height: 954px;
 }
 
 
@@ -11,8 +12,13 @@
 }
 
 #history td{
-    text-align: right;
+    text-align: center;
     border-color: aqua;
+    font-size: 30px;
+}
+
+#history .cap{
+    font-weight :bold
 }
 
 
@@ -25,6 +31,44 @@
     border: none;
     background-color: transparent;
 
+}
+
+#history #memory{
+    text-align: center;
+    font-size: 50px;
+    height: 50px;
+}
+
+#history .memoryAniSet{
+    transform:translateX(-40px);
+    animation: flash;
+    animation-duration: 0.1s;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+}
+#history .memoryAniPlus{
+    transform:translateY(-10px);
+    animation: flash;
+    animation-duration: 0.1s;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+}
+#history .memoryAniMinus{
+    transform:translateY(+10px);
+    animation: flash;
+    animation-duration: 0.1s;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+}
+
+@keyframes flash{
+    from{
+        opacity: 0;
+    }
+    to{
+        transform: none;
+        opacity: 1;
+    }
 }
 
 #history .warp{

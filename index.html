@@ -6,6 +6,7 @@
     <title>calc</title>
     <script src="index.js"></script>
     <script src="history.js"></script>
+    <script src="memory.js"></script>
     <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="history.css">
 </head>
@@ -14,7 +15,7 @@
     <div>
         <table id="tablses">
             <caption>
-                <h2>電卓</h2>
+                <h1>電卓</h1>
             </caption>
             <tr>
                 <td>
@@ -31,10 +32,10 @@
                                 </td>
                             </tr>
                             <tr id="tr_back">
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td id="td_back"><button id="button_back" onclick="back()" disabled="trus">Back</button>
+                                <td><button class="button_back mButtons" id="memorySet" onclick="memorySet()" >MS</button></td>
+                                <td><button class="button_back mButtons" id="memoryPlus" onclick="memoryPlus()">M+</button></td>
+                                <td><button class="button_back mButtons" id="memoryMinus" onclick="memoryMinus()" >M-</button></td>
+                                <td id="td_back"><button class="button_back" id="button_back" onclick="back()" disabled="trus">Back</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -44,30 +45,44 @@
                 </td>
                 <td>
                     <table id="history">
-                        <caption>履歴</caption>
                         <tr>
-                            <td>
-                                <button  onclick="useHistory(0)">計算式<br>結果</button>
+                            <td class = "cap">
+                                メモリ
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <button  onclick="useHistory(1)">計算式<br>結果</button>
+                                <button id = "memory" onclick="useMemory()">0</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class = "cap">
+                                履歴
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <button  onclick="useHistory(2)">計算式<br>結果</button>
+                                <button  onclick="useHistory(0)"></button>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <button  onclick="useHistory(3)">計算式<br>結果</button>
+                                <button  onclick="useHistory(1)"></button>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <button  onclick="useHistory(4)">計算式<br>結果</button>
+                                <button  onclick="useHistory(2)"></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button  onclick="useHistory(3)"></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button  onclick="useHistory(4)"></button>
                             </td>
                         </tr>
                     </table>

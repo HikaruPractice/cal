@@ -25,6 +25,9 @@ const pattern_Others = /^[^\d\.\+\-\*\/＋‐×÷\(\)\=]$/
 window.onload = () => {
     result = document.getElementById('result');
     input = document.getElementById('input');
+
+memoryOut = document.getElementById('memory');
+
     rightParenthesis = document.getElementById('button_right');
     rightParenthesis.disabled = true;
     button_back = document.getElementById('button_back');
@@ -44,6 +47,7 @@ window.onload = () => {
     signModeSw(true);
     button_dot = document.getElementById('button_dot');
 
+    
 
 }
 
@@ -139,7 +143,7 @@ function pushButton(_v) {
     //計算後初回入力で数式を消す
     if (KeyO === 'Enter') {
         reset();
-        button_history(0).classList.remove('disappear','appear')
+        button_history(0).classList.remove('disappear','appear');
         for (i=1;i<5;i++){
             button_history(i).classList.remove('warp','move');
         }
@@ -204,7 +208,6 @@ function pushButton(_v) {
         } else if (KeyO === 'Operator') {
             if (KeyN === 'Number') {
                 pushStack(inpO);
-                inpO = '';
                 if(_v === '.'){
                     inpN = '0.';
                     f_dot =true;
@@ -323,6 +326,7 @@ function pushButton(_v) {
         } else if( KeyO === 'Enter'){
             result.classList.remove('ani');
             if (KeyN === 'Number') {
+                input.value = '';
                 if(_v === '.'){
                     inpN = '0.';
                     f_dot =true;
@@ -338,9 +342,6 @@ function pushButton(_v) {
                 Kari_Cal();
 
             } else if (KeyN === 'LeftBracket') {
-                pushStack(Ans);
-                Kari_Cal();
-                pushStack('×');
                 pushStack('(');
                 brackets++;
             } else if (KeyN === 'RightBracket') {
@@ -569,6 +570,13 @@ function manualDo() {
         st = st.slice(1);
     }
     pushButton('=');
+    
+    window.setTimeout(()=>{        
+    button_history(0).classList.remove('disappear','appear');
+    for (i=1;i<5;i++){
+        button_history(i).classList.remove('warp','move');
+    }
+    }, 600);
 }
 
 function Calculation(st) {
