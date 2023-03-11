@@ -44,6 +44,7 @@ window.onload = () => {
     signModeSw(true);
     button_dot = document.getElementById('button_dot');
 
+
 }
 
 
@@ -102,7 +103,7 @@ function buttonDisableSetting(){
         rightParenthesis.disabled = (brackets === 0);
     }
     //符号モード判定
-    if(KeyO === '' || KeyO === 'Enter' || KeyO === 'LeftBracket'|| KeyO === 'Sign'){
+    if(KeyO === ''  || KeyO === 'LeftBracket'|| KeyO === 'Sign'){
         signModeSw(true);
     }else{
         signModeSw(false);
@@ -286,9 +287,7 @@ function pushButton(_v) {
             }
 
             //初期状態のとき
-        } else if (KeyO === '' || KeyO === 'Enter') {
-            result.classList.remove('ani');
-            input.value = '';
+        } else if (KeyO === '' ) {
             if (KeyN === 'Number') {
                 if(_v === '.'){
                     inpN = '0.';
@@ -301,6 +300,8 @@ function pushButton(_v) {
                 if (pattern_Signs.test(_v)) {
                     KeyN = 'Sign';
                     inpN = _v;
+                    pushStack('(');
+                    brackets++;
                     result.textContent = inpN;
                 } else {
                     //異常入力
@@ -319,7 +320,36 @@ function pushButton(_v) {
                 result.textContent = Ans;
                 KeyN = 'Number';
             }
-        } else if (KeyO === 'Sign') {
+        } else if( KeyO === 'Enter'){
+            result.classList.remove('ani');
+            if (KeyN === 'Number') {
+                if(_v === '.'){
+                    inpN = '0.';
+                    f_dot =true;
+                }else{
+                    inpN = _v;
+                }
+                result.textContent = inpN;
+            } else if (KeyN === 'Operator') {
+                pushStack(Ans);
+                inpO = _v;
+                input.value = formal + _v;
+                operatorSelected(_v);
+                Kari_Cal();
+
+            } else if (KeyN === 'LeftBracket') {
+                pushStack(Ans);
+                Kari_Cal();
+                pushStack('×');
+                pushStack('(');
+                brackets++;
+            } else if (KeyN === 'RightBracket') {
+                //異常入力
+                return;
+            } else if (KeyN === 'Enter') {
+                //未制作
+            }
+        }else if (KeyO === 'Sign') {
             if (KeyN === 'Number') {
                 if(_v === '.'){
                     inpN += '0.';
@@ -604,7 +634,7 @@ function ReversePolishCalculator(inp) {
                 stack.push(popInp);
         }
     }
-    return stack.pop()
+    return Math.round(stack.pop()*100000)/100000;
 }
 function ReversePolishConverter(inp) {
     var len = inp.length;

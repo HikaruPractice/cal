@@ -19,8 +19,8 @@
 #history button{
     text-align: right;
     height: 100px;
-    width: 476px;
-    font-size: 40px;
+    width: 357px;
+    font-size: 30px;
     margin: 10px 0;
     border: none;
     background-color: transparent;
@@ -58,7 +58,7 @@
     animation-duration: 0.3s;
     animation-timing-function: ease-out;
     animation-fill-mode: forwards;
-    animation-delay: 0.5s;
+    animation-delay: 0.3s;
 }
 @keyframes visible{
     to{
