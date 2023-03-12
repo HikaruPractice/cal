@@ -2,32 +2,27 @@ let memory = 0;
 
 function memorySet(){
     memory = Number(result.textContent);
+    memory = Math.round(memory*100000)/100000;
     memoryOut.textContent = memory;
     memoryAni('memoryAniSet');
+    
 }
 function memoryPlus(){
     memory += Number(result.textContent);
+    memory = Math.round(memory*100000)/100000;
     memoryOut.textContent = memory;
     memoryAni('memoryAniPlus');
 
 }
 function memoryMinus(){
     memory -= Number(result.textContent);
+    memory = Math.round(memory*100000)/100000;
     memoryOut.textContent = memory;
     memoryAni('memoryAniMinus');
 
 }
 
 function useMemory(){
-        //計算後初回入力で数式を消す
-        if (KeyO === 'Enter') {
-            reset();
-            button_history(0).classList.remove('disappear','appear');
-            for (i=1;i<5;i++){
-                button_history(i).classList.remove('warp','move');
-            }
-        }
-
     //計算式入力して=押した後に復帰
     if(KeyO === 'Number' || KeyO=== 'LeftBracket'){
         inpN = memory.toString();
@@ -48,7 +43,7 @@ function useMemory(){
         result.textContent = inpN;
     }
     KeyO ='Number';
-    f_dot = /^./.test(inpN);
+    f_dot = /\./.test(inpN);
     buttonDisableSetting();
     operatorSelectedReset();
 }
@@ -57,5 +52,6 @@ function memoryAni(className){
     memoryOut.classList.add(className);
     window.setTimeout(()=>{
         memoryOut.classList.remove(className);
-    }, 100);
+    }, 200);
 }
+

@@ -70,6 +70,7 @@ td:has(>#input){
     background-color: deepskyblue;
     color: blue;
     border-color: deepskyblue;
+    text-align: center;
 }
 
 #Calculator button:disabled{

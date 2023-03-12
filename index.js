@@ -12,6 +12,7 @@ let result;
 let input;
 let rightParenthesis;
 let f_manualInput = false;
+let Enters = 1;
 
 const pattern_Numbers = /^[\d\.]$/;
 const pattern_Operators = /^[\+\-\*\/＋‐×÷]$/;
@@ -26,7 +27,7 @@ window.onload = () => {
     result = document.getElementById('result');
     input = document.getElementById('input');
 
-memoryOut = document.getElementById('memory');
+    memoryOut = document.getElementById('memory');
 
     rightParenthesis = document.getElementById('button_right');
     rightParenthesis.disabled = true;
@@ -47,17 +48,17 @@ memoryOut = document.getElementById('memory');
     signModeSw(true);
     button_dot = document.getElementById('button_dot');
 
-    
+
 
 }
 
 
 
 function debugout() {
-    console.log(stack);
-    console.log(formal);
-    console.log(input.value);
-    console.log(result.textContent);
+    // console.log(stack);
+    // console.log(formal);
+    // console.log(input.value);
+    // console.log(result.textContent);
 }
 
 
@@ -69,8 +70,7 @@ function reset() {
     brackets = 0;
     f_dot = false;
     KariResult = 0;
-    button_back.disabled = true;
-
+    Enters = 1;
 }
 
 function operatorSelectedReset() {
@@ -89,32 +89,40 @@ function operatorSelected(_v) {
         case '‐':
             button_minus.classList.add('operator_selected');
             break;
-            case '*':
+        case '*':
         case '×':
             button_times.classList.add('operator_selected');
             break;
-            case '/':
+        case '/':
         case '÷':
             button_divided.classList.add('operator_selected');
     }
 }
 
-function buttonDisableSetting(){
+function calAni() {
+
+    result.classList.add('ani');
+    window.setTimeout(() => {
+        result.classList.remove('ani');
+    }, 100);
+}
+
+function buttonDisableSetting() {
     //「)」可否判定
-    if(KeyO === 'Operator' || KeyO === 'LeftBracket' || KeyO === 'Sign'){
+    if (KeyO === 'Operator' || KeyO === 'LeftBracket' || KeyO === 'Sign') {
         rightParenthesis.disabled = true;
-    }else{
+    } else {
         rightParenthesis.disabled = (brackets === 0);
     }
     //符号モード判定
-    if(KeyO === ''  || KeyO === 'LeftBracket'|| KeyO === 'Sign'){
+    if (KeyO === '' || KeyO === 'LeftBracket' || KeyO === 'Sign') {
         signModeSw(true);
-    }else{
+    } else {
         signModeSw(false);
     }
     button_dot.disabled = f_dot;
 }
-function signModeSw(b){
+function signModeSw(b) {
     button_times.disabled = b;
     button_divided.disabled = b;
 }
@@ -142,10 +150,10 @@ function pushButton(_v) {
 
     //計算後初回入力で数式を消す
     if (KeyO === 'Enter') {
-        reset();
-        button_history(0).classList.remove('disappear','appear');
-        for (i=1;i<5;i++){
-            button_history(i).classList.remove('warp','move');
+        if (KeyN === 'Enter') {
+
+        } else {
+            reset();
         }
     }
 
@@ -155,17 +163,16 @@ function pushButton(_v) {
         KeyO = '';
         input.value = '';
         result.textContent = '0';
-        button_history(0).classList.remove('disappear','appear')
-        for (i=1;i<5;i++){
-            button_history(i).classList.remove('warp','move');
-        }
+
+        button_back.disabled = false;
+
     } else if (KeyN === 'Other') {
         return;
     } else {
 
         //数字以外が入力されたらドットモード解除
-        if (KeyN === 'Number'){}
-        else{
+        if (KeyN === 'Number') { }
+        else {
             f_dot = false;
             inpN = Number(inpN).toString();
         }
@@ -173,12 +180,12 @@ function pushButton(_v) {
         //直前が数字かドットの時
         if (KeyO === 'Number') {
             if (KeyN === 'Number') {
-                if(_v === '.'){
-                    if(f_dot){
+                if (_v === '.') {
+                    if (f_dot) {
                         //異常入力
                         return;
-                    }else{
-                        f_dot =true;
+                    } else {
+                        f_dot = true;
                     }
                 }
                 inpN += _v;
@@ -208,10 +215,10 @@ function pushButton(_v) {
         } else if (KeyO === 'Operator') {
             if (KeyN === 'Number') {
                 pushStack(inpO);
-                if(_v === '.'){
+                if (_v === '.') {
                     inpN = '0.';
-                    f_dot =true;
-                }else{
+                    f_dot = true;
+                } else {
                     inpN = _v;
                 }
                 result.textContent = inpN;
@@ -237,10 +244,10 @@ function pushButton(_v) {
         } else if (KeyO === 'LeftBracket') {
 
             if (KeyN === 'Number') {
-                if(_v === '.'){
+                if (_v === '.') {
                     inpN = '0.';
-                    f_dot =true;
-                }else{
+                    f_dot = true;
+                } else {
                     inpN = _v;
                 }
                 result.textContent = inpN;
@@ -266,10 +273,10 @@ function pushButton(_v) {
         } else if (KeyO === 'RightBracket') {
             if (KeyN === 'Number') {
                 pushStack('×');
-                if(_v === '.'){
+                if (_v === '.') {
                     inpN = '0.';
-                    f_dot =true;
-                }else{
+                    f_dot = true;
+                } else {
                     inpN = _v;
                 }
                 result.textContent = inpN;
@@ -290,12 +297,12 @@ function pushButton(_v) {
             }
 
             //初期状態のとき
-        } else if (KeyO === '' ) {
+        } else if (KeyO === '') {
             if (KeyN === 'Number') {
-                if(_v === '.'){
+                if (_v === '.') {
                     inpN = '0.';
-                    f_dot =true;
-                }else{
+                    f_dot = true;
+                } else {
                     inpN = _v;
                 }
                 result.textContent = inpN;
@@ -318,19 +325,18 @@ function pushButton(_v) {
                 return;
             } else if (KeyN === 'Enter') {
                 inpN = Ans.toString();
-                    f_dot = /\./.test(inpN);
+                f_dot = /\./.test(inpN);
                 input.value = Ans + '=';
                 result.textContent = Ans;
                 KeyN = 'Number';
             }
-        } else if( KeyO === 'Enter'){
-            result.classList.remove('ani');
+        } else if (KeyO === 'Enter') {
             if (KeyN === 'Number') {
                 input.value = '';
-                if(_v === '.'){
+                if (_v === '.') {
                     inpN = '0.';
-                    f_dot =true;
-                }else{
+                    f_dot = true;
+                } else {
                     inpN = _v;
                 }
                 result.textContent = inpN;
@@ -347,15 +353,43 @@ function pushButton(_v) {
             } else if (KeyN === 'RightBracket') {
                 //異常入力
                 return;
+            //=連続入力で繰り返し計算
             } else if (KeyN === 'Enter') {
-                //未制作
+                Enters++;
+                switch (inpO) {
+                    case '+':
+                    case '＋':
+                        input.value = formal + '×' + Enters + '=';
+                        Ans = Number(result.textContent) + Number(stack[stack.length - 1]);
+                        break;
+                    case '-':
+                    case '‐':
+
+                        input.value = formal + '×' + Enters + '=';
+                        Ans = Number(result.textContent) - Number(stack[stack.length - 1]);
+                        break;
+                    case '×':
+                    case '*':
+
+                        input.value = formal + '^' + Enters + '=';
+                        Ans = Number(result.textContent) * Number(stack[stack.length - 1]);
+                        break;
+                    case '/':
+                    case '÷':
+                        input.value = formal + '^' + Enters + '=';
+                        Ans = Number(result.textContent) / Number(stack[stack.length - 1]);
+                        break;
+                }
+                Ans = Math.round(Ans*100000)/100000;
+                result.textContent = Ans;
+                calAni() ;
             }
-        }else if (KeyO === 'Sign') {
+        } else if (KeyO === 'Sign') {
             if (KeyN === 'Number') {
-                if(_v === '.'){
+                if (_v === '.') {
                     inpN += '0.';
-                    f_dot =true;
-                }else{
+                    f_dot = true;
+                } else {
                     inpN += _v;
                 }
                 result.textContent = inpN;
@@ -395,6 +429,8 @@ function pushButton(_v) {
 function back() {
     console.log('push:Back');
     operatorSelectedReset();
+
+
 
     let temp;
     let type;
@@ -505,7 +541,7 @@ function back() {
     debugout();
 }
 function ptnch(temp) {
-    if(temp==null){
+    if (temp == null) {
         return ""
     }
     let type;
@@ -555,10 +591,10 @@ function main_Cal() {
     Ans = Calculation(stack);
 
     saveResulet();
-    
+
     input.value += '=';
     result.textContent = Ans;
-    result.classList.add('ani');
+    calAni();
 }
 
 function manualDo() {
@@ -570,13 +606,8 @@ function manualDo() {
         st = st.slice(1);
     }
     pushButton('=');
-    
-    window.setTimeout(()=>{        
-    button_history(0).classList.remove('disappear','appear');
-    for (i=1;i<5;i++){
-        button_history(i).classList.remove('warp','move');
-    }
-    }, 600);
+
+
 }
 
 function Calculation(st) {
@@ -642,7 +673,7 @@ function ReversePolishCalculator(inp) {
                 stack.push(popInp);
         }
     }
-    return Math.round(stack.pop()*100000)/100000;
+    return Math.round(stack.pop() * 100000) / 100000;
 }
 function ReversePolishConverter(inp) {
     var len = inp.length;
@@ -693,7 +724,6 @@ function ReversePolishConverter(inp) {
 // 同じ動作をキーボードの[1]キーが入力されたときに実行したい
 function getKeyboardValue(e) {
     if (f_manualInput) {
-        result.classList.remove('ani');
 
         if (e.key === 'Enter') {
             manualDo();
