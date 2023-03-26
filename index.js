@@ -47,6 +47,7 @@ window.onload = () => {
     button_divided = document.getElementById('button_divided');
     signModeSw(true);
     button_dot = document.getElementById('button_dot');
+    button_Enter = document.getElementById('button_Enter');
 
 
 
@@ -120,6 +121,13 @@ function buttonDisableSetting() {
     } else {
         signModeSw(false);
     }
+    //'('の直後は'='を押せない
+    if (KeyO === 'LeftBracket'){
+        button_Enter.disabled = true;
+    }else{
+        
+        button_Enter.disabled = false;
+    }
     button_dot.disabled = f_dot;
 }
 function signModeSw(b) {
@@ -163,8 +171,7 @@ function pushButton(_v) {
         KeyO = '';
         input.value = '';
         result.textContent = '0';
-
-        button_back.disabled = false;
+        button_back.disabled = true;
 
     } else if (KeyN === 'Other') {
         return;
@@ -446,14 +453,19 @@ function back() {
                 inpO = temp;
                 KeyO = 'Operator';
                 operatorSelected(temp);
+                input.value = formal+inpO;
                 break;
             case 'LeftBracket':
                 stack.push('(');
                 KeyO = 'LeftBracket';
+                input.value = formal;
                 break;
             case '':
+                formal = '';
                 button_back.disabled = true;
                 KeyO = '';
+                input.value = '';
+                KariResult = Ans;
         }
     } else if (KeyO === 'Operator') {
         temp = stack.pop();
@@ -461,16 +473,16 @@ function back() {
         switch (type) {
             case 'Number':
                 formal = formal.slice(0, -temp.length);
-                inpN = temp;
-                result.textContent = temp;
                 KeyO = 'Number';
+                back();
                 break;
             case 'RightBracket':
                 stack.push(')');
                 KeyO = 'RightBracket';
+                back();
+                break;
 
         }
-        input.value = formal;
     } else if (KeyO === 'LeftBracket') {
         stack.pop();
         brackets--;
@@ -505,11 +517,9 @@ function back() {
         type = ptnch(temp);
         switch (type) {
             case 'Number':
-                formal = formal.slice(0, -(temp.length + 1));
-                inpN = temp;
-                input.value = formal;
-                result.textContent = temp;
+                formal = formal.slice(0, -(temp.length+1));
                 KeyO = 'Number';
+                back();
                 break;
             case 'RightBracket':
                 stack.push(')');
@@ -745,6 +755,8 @@ function getKeyboardValue(e) {
             case 'C':
             case '(':
             case ')':
+            case '.':
+            case '=':
                 pushButton(e.key);
                 break;
             case 'c':
@@ -765,10 +777,15 @@ function getKeyboardValue(e) {
                 pushButton('×');
                 break;
             case 'Enter':
+            case '\\':
                 pushButton('=');
                 break;
             case 'Delete':
                 pushButton('C');
+                break;
+            case 'b':
+            case 'B':
+                back();
                 break;
         }
     }

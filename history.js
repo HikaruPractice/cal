@@ -68,19 +68,12 @@ function useHistory(_n){
     }else if(KeyO === '' || KeyO === 'Enter'){
         formal = history_formal[_n];
         Ans = history_Ans[_n];
-        stack = [...history_stack[_n]];
+        stack = JSON.parse(JSON.stringify(history_stack[_n]));
         input.value = formal + '=';
         result.textContent = Ans;
         signModeSw(false);
         button_back.disabled = false;
         KeyO = 'Enter';
-        for (let i = history_stack[_n].length;i>0;i--){
-
-            inpO = history_stack[_n][i-1];
-            if (pattern_Operators.test(inpO) ){
-                break;
-            }
-        }
     }
     f_dot = /\./.test(inpN);
     buttonDisableSetting();
